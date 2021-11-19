@@ -1,6 +1,8 @@
 const loginControl = (request, response) => {
   const clientServices = require("../services/clientServices");
 
+  console.log("REQUEST IS " + request.params.username);
+
   let username = request.body.username;
   let password = request.body.password;
   if (!username || !password) {
@@ -41,7 +43,7 @@ const registerControl = (request, response) => {
   const clientServices = require("../services/clientServices");
 
   let username = request.body.username;
-  let password = request.body.passwsord;
+  let password = request.body.password;
   let society = request.body.society;
   let contact = request.body.contact;
   let addres = request.body.addres;
