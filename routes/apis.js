@@ -7,7 +7,7 @@ const router = express.Router();
 //routes for dynamic processing of products
 //-----------------------------------------------
 //route for listing all products
-router.get("/api/catalogue", productController.getCatalogue);
+router.get("/api/catalog", productController.getCatalogue);
 router.get("/api/article/:id", productController.getProductByID);
 
 //export router
