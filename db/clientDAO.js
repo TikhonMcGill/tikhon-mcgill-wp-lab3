@@ -20,6 +20,28 @@ function findByUsername(username, callback) {
   });
 }
 
+function findBySociety(society, callback) {
+  const selectClient = `SELECT * from client where society like '${society}';`;
+  database.getResult(selectClient, function (err, rows) {
+    if (!err) {
+      callback(null, rows);
+    } else {
+      console.log(err);
+    }
+  });
+}
+
+function findByNumclient(num_client, callback) {
+  const selectClient = `SELECT * from client where num_client like '${num_client}';`;
+  database.getResult(selectClient, function (err, rows) {
+    if (!err) {
+      callback(null, rows);
+    } else {
+      console.log(err);
+    }
+  });
+}
+
 function cryptPassword(pass, callback) {
   //set the complexity of the salt generation
   const saltRounds = 10;
@@ -80,7 +102,7 @@ module.exports = {
   findByUsername,
   findBySociety,
   findByNumclient,
-  createClient,
-  deleteClient,
-  createInitialAccounts
+  createClient
+  //deleteClient,
+  //createInitialAccounts
 };
