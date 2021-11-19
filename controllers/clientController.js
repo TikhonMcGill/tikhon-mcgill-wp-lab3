@@ -1,5 +1,7 @@
 const { Client } = require("../models/entities");
 
+var num_client;
+
 const loginControl = (request, response) => {
   const clientServices = require("../services/clientServices");
 
@@ -12,7 +14,6 @@ const loginControl = (request, response) => {
     });
     response.end();
   } else {
-    console.log("REQUEST SESSION " + request.session + "!");
     if (request.session && request.session.user) {
       response.render("login_result", {
         message: "Woah there partner! You're already logged in!"
@@ -36,12 +37,8 @@ const loginControl = (request, response) => {
           console.log("User from login service :" + client[0].num_client);
           //add to session
           request.session.user = username;
-          request.session.num_client = client[0].num_client;
-          if (client[0].num_client !== 66) {
-            request.session.admin = false;
-          } else {
-            request.session.admin = true;
-          }
+          num_client = client[0].num_client;
+          request.session.admin = client[0].num_client === 66;
           response.render("login_result", {
             message: `Login (${username}, ID.${client[0].num_client}) successful!`
           });
@@ -99,25 +96,31 @@ const registerControl = (request, response) => {
 
 const getClients = (request, response) => {
   const clientServices = require("../services/clientServices");
-  clientServices.searchService(function (err, rows) {
-    response.render("clients", { clients: rows });
-  });
+  if (request.session.admin) {
+    console.log("ADMIN!");
+    clientServices.searchService(function (err, rows) {
+      response.render("clients", { clients: rows });
+      console.log(request.session.num_client);
+    });
+  } else {
+    console.log("NOT ADMIN!");
+    if (typeof num_client !== "undefined") {
+      console.log("NOT ADMIN!");
+      clientServices.searchNumClientService(num_client, function (err, rows) {
+        response.render("person", { clientus: rows });
+      });
+    } else {
+      console.log(num_client);
+      response.render("notloggedin");
+    }
+  }
 };
 
-const getClientByNumclient = (request, response) => {
+const getClientByNumClient = (request, response) => {
   const clientServices = require("../services/clientServices");
-  let num_client = request.params.num_client;
-  clientServices.searchNumclientService(num_client, function (err, rows) {
-    response.json(rows);
-    response.end();
-  });
-};
-
-const getClientByName = (request, response) => {
-  const clientServices = require("../services/clientServices");
-  let name = request.params.name;
-  clientServices.searchNameService(name, function (err, rows) {
-    response.render("client", { client: rows });
+  let client_num = request.params.num_client;
+  clientServices.searchNumClientService(client_num, function (err, rows) {
+    response.render("person", { clientus: rows });
   });
 };
 
@@ -125,6 +128,5 @@ module.exports = {
   loginControl,
   registerControl,
   getClients,
-  getClientByNumclient,
-  getClientByName
+  getClientByNumClient
 };

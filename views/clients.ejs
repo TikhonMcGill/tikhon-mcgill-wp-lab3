@@ -11,11 +11,11 @@
             <% clients.forEach(client => { %>
                 <tr>
                     <th scope="row">
-                        <%= client.name %>
+                        <%= client.contact %>
                     </th>
                     <td>
-                        <a href="/api/client/<%= client.name %>">
-                            <%= client.name %>
+                        <a href="/api/person/<%= client.num_client %>">
+                            <%= client.num_client %>
                         </a>
                     </td>
                 </tr>

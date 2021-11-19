@@ -4,7 +4,16 @@ const session = require("express-session");
 //creating app
 const app = express();
 
-app.use(session({ resave: true, secret: "123456", saveUninitialized: false }));
+app.use(
+  session({
+    resave: true,
+    secret: "123456",
+    saveUninitialized: false,
+    admin: false,
+    num_user: undefined,
+    username: undefined
+  })
+);
 
 // using JSON and URL Encoded middleware
 app.use(express.json());

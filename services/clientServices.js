@@ -26,7 +26,7 @@ const loginService = (typedUsername, typedPassword, callback) => {
           callback(null, true, null);
         } else {
           console.log("Password matches!");
-          clientDAO.findByNumclient(num, function (err3, rows) {
+          clientDAO.findByNumClient(num, function (err3, rows) {
             if (err3) {
               throw err3;
             }
@@ -96,7 +96,7 @@ const searchNameService = function (client_name, callback) {
 };
 
 const searchService = function (callback) {
-  clientDAO.findAll(function (err, rows) {
+  clientDAO.find(function (err, rows) {
     if (err) {
       throw err;
     }
@@ -108,8 +108,17 @@ const searchService = function (callback) {
   });
 };
 
-const searchNumclientService = function (num_client, callback) {
-  //to be completed
+const searchNumClientService = function (num_client, callback) {
+  clientDAO.findByNumClient(num_client, function (err, rows) {
+    if (err) {
+      throw err;
+    }
+    if (rows.length === 0) {
+      console.log("No clients by that num_client!");
+    } else {
+      callback(null, rows[0]);
+    }
+  });
 };
 
 const deleteService = function (num_client, callback) {
@@ -119,7 +128,7 @@ const deleteService = function (num_client, callback) {
 module.exports = {
   loginService,
   registerService,
-  searchNumclientService,
+  searchNumClientService,
   searchService,
   searchNameService,
   deleteService
