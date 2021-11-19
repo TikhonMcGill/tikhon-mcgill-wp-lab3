@@ -1,16 +1,24 @@
+const { Client } = require("../models/entities");
+
 const loginControl = (request, response) => {
   const clientServices = require("../services/clientServices");
 
-  console.log("REQUEST IS " + request.params.username);
+  console.log("THA USERNAME IS " + request.body.username + "!");
 
   let username = request.body.username;
   let password = request.body.password;
   if (!username || !password) {
-    response.send("login failed");
+    response.render("login_result", {
+      message:
+        "Login failed! It would help if you entered both a username and password!"
+    });
     response.end();
   } else {
+    console.log("REQUEST SESSION " + request.session + "!");
     if (request.session && request.session.user) {
-      response.send("Already logged in");
+      response.render("login_result", {
+        message: "Woah there partner! You're already logged in!"
+      });
       response.end();
     } else {
       clientServices.loginService(username, password, function (
@@ -21,7 +29,10 @@ const loginControl = (request, response) => {
         console.log("Client from login service :" + JSON.stringify(client));
         if (client === null) {
           console.log("Auhtentication problem!");
-          response.send("login failed"); //invite to register
+          response.render("login_result", {
+            message:
+              "Log in failed! We don't have such details in the database. Join us and register!"
+          });
           response.end();
         } else {
           console.log("User from login service :" + client[0].num_client);
@@ -29,9 +40,9 @@ const loginControl = (request, response) => {
           request.session.user = username;
           request.session.num_client = client[0].num_client;
           request.session.admin = false;
-          response.send(
-            `Login (${username}, ID.${client[0].num_client}) successful!`
-          );
+          response.render("login_result", {
+            message: `Login (${username}, ID.${client[0].num_client}) successful!`
+          });
           response.end();
         }
       });
@@ -70,15 +81,15 @@ const registerControl = (request, response) => {
     console.log("User from register service :" + insertedID);
     if (exists) {
       console.log("Username taken!");
-      response.send(
-        `registration failed. Username (${username}) already taken!`
-      ); //invite to register
+      response.render("register_result", {
+        message: `Registration failed. The username (${username}) is already taken!`
+      });
     } else {
       client.num_client = insertedID;
       console.log(`Registration (${username}, ${insertedID}) successful!`);
-      response.send(
-        `Successful registration ${client.contact} (ID.${client.num_client})!`
-      );
+      response.render("register_result", {
+        message: `Successful registration ${client.contact} (ID.${client.num_client})!`
+      });
     }
     response.end();
   });

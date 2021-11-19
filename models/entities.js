@@ -17,7 +17,7 @@ class Client {
     this.num_client = num_client;
     this.society = society;
     this.contact = contact;
-    this.address = address;
+    this.addres = address;
     this.zipcode = zipcode;
     this.city = city;
     this.phone = phone;
@@ -25,3 +25,5 @@ class Client {
     this.max_outstanding = max_outstanding;
   }
 }
+
+module.exports = { Client };

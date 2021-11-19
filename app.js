@@ -1,7 +1,14 @@
 const express = require("express");
+const session = require("express-session");
 
 //creating app
 const app = express();
+
+app.use(session({ resave: true, secret: "123456", saveUninitialized: false }));
+
+// using JSON and URL Encoded middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //handling static HTML and EJS templates
 app.use(express.static("public"));
@@ -28,10 +35,6 @@ app.get("/register", (req, res) => {
 //pass requests to the router middleware
 const router = require("./routes/apis");
 app.use(router);
-
-// using JSON and URL Encoded middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 //make the app listen on port
 const port = process.argv[2] || process.env.PORT || 3000;
