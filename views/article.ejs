@@ -1,0 +1,38 @@
+<%- include('header'); -%>
+<div class="content">
+  <h1>Selected article</h1>
+  <table class="table">
+      <thead>
+          <tr>
+              <th>Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Price</th>
+              <th scope="col">VAT</th>
+              <th scope="col">Stock</th>
+          </tr>
+      </thead>
+      <tbody>
+          
+              <tr>
+                  <th scope="row">
+                      <%= product.name %>
+                  </th>
+                  <td>
+                      <%= product.category %>
+                  </td>
+                  <td>
+                      <%= product.price %>
+                  </td>
+                  <td>
+                    <%= product.vat %>
+                  </td>
+                  <td>
+                    <%= product.stock %>
+                  </td>
+              </tr>
+
+      </tbody>
+  </table>
+</div>
+<br>
+<%- include('footer'); -%>
