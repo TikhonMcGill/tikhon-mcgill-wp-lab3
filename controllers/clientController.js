@@ -3,8 +3,6 @@ const { Client } = require("../models/entities");
 const loginControl = (request, response) => {
   const clientServices = require("../services/clientServices");
 
-  console.log("THA USERNAME IS " + request.body.username + "!");
-
   let username = request.body.username;
   let password = request.body.password;
   if (!username || !password) {
@@ -39,7 +37,11 @@ const loginControl = (request, response) => {
           //add to session
           request.session.user = username;
           request.session.num_client = client[0].num_client;
-          request.session.admin = false;
+          if (client[0].num_client !== 66) {
+            request.session.admin = false;
+          } else {
+            request.session.admin = true;
+          }
           response.render("login_result", {
             message: `Login (${username}, ID.${client[0].num_client}) successful!`
           });
@@ -98,8 +100,7 @@ const registerControl = (request, response) => {
 const getClients = (request, response) => {
   const clientServices = require("../services/clientServices");
   clientServices.searchService(function (err, rows) {
-    response.json(rows);
-    response.end();
+    response.render("clients", { clients: rows });
   });
 };
 
@@ -112,9 +113,18 @@ const getClientByNumclient = (request, response) => {
   });
 };
 
+const getClientByName = (request, response) => {
+  const clientServices = require("../services/clientServices");
+  let name = request.params.name;
+  clientServices.searchNameService(name, function (err, rows) {
+    response.render("client", { client: rows });
+  });
+};
+
 module.exports = {
   loginControl,
   registerControl,
   getClients,
-  getClientByNumclient
+  getClientByNumclient,
+  getClientByName
 };

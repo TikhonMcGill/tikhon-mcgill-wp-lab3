@@ -1,0 +1,47 @@
+<%- include('header'); -%>
+<div class="content">
+  <h1>Selected Client</h1>
+  <table class="table">
+      <thead>
+          <tr>
+              <th>Client Name</th>
+              <th scope="col">Society</th>
+              <th scope="col">Address</th>
+              <th scope="col">Zipcode</th>
+              <th scope="col">City</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Fax</th>
+              <th scope="col">Max Outstanding</th>
+          </tr>
+      </thead>
+      <tbody>
+          
+              <tr>
+                  <th scope="row">
+                      <%= client.name %>
+                  </th>
+                  <td>
+                      <%= client.addres %>
+                  </td>
+                  <td>
+                      <%= client.zipcode %>
+                  </td>
+                  <td>
+                    <%= client.city %>
+                  </td>
+                  <td>
+                    <%= client.phone %>
+                  </td>
+                  <td>
+                    <%= client.fax %>
+                  </td>
+                  <td>
+                    <%= client.max_outstanding %>
+                  </td>
+              </tr>
+
+      </tbody>
+  </table>
+</div>
+<br>
+<%- include('footer'); -%>

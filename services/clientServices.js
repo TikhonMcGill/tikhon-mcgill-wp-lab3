@@ -82,8 +82,30 @@ const registerService = (client, callback) => {
   });
 };
 
+const searchNameService = function (client_name, callback) {
+  clientDAO.findByUsername(client_name, function (err, rows) {
+    if (err) {
+      throw err;
+    }
+    if (rows.length > 0) {
+      console.low("No clients!");
+    } else {
+      callback(null, rows);
+    }
+  });
+};
+
 const searchService = function (callback) {
-  //to be completed
+  clientDAO.findAll(function (err, rows) {
+    if (err) {
+      throw err;
+    }
+    if (rows.length === 0) {
+      console.log("No clients!");
+    } else {
+      callback(null, rows);
+    }
+  });
 };
 
 const searchNumclientService = function (num_client, callback) {
@@ -99,5 +121,6 @@ module.exports = {
   registerService,
   searchNumclientService,
   searchService,
+  searchNameService,
   deleteService
 };
